@@ -178,4 +178,25 @@ class BaseController extends AbstractController
 			'form' => $form->createView()
 		]);
 	}
+
+	#[Route('/Epandre', name: 'app_epandre')]
+	public function epandre(Request $request, EntityManagerInterface $em): Response
+	{
+		$culture = new epandre();
+		$form = $this->createForm(EpandreType::class, $culture);
+		
+		if($request->isMethod('POST')){
+			$form->handleRequest($request);
+			if ($form->isSubmitted()&&$form->isValid()){
+				$em->persist($culture);	
+				$em->flush();				
+				$this->addFlash('notice','Message envoyé'); 
+				return $this->redirectToRoute('app_epandre'); 
+			}
+		}
+		
+		return $this->render('base/epandre.html.twig', [
+			'form' => $form->createView()
+		]);
+	}
 } 
