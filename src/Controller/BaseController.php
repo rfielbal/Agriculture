@@ -26,6 +26,8 @@ use App\Form\EngraisType;
 use App\Form\CultureType;
 use App\Entity\Culture;
 
+use App\Form\PossederType;
+use App\Entity\Posseder;
 
 class BaseController extends AbstractController
 {
@@ -136,7 +138,7 @@ class BaseController extends AbstractController
 
 
 
-#[Route('/Production', name: 'app_production')]
+	#[Route('/Production', name: 'app_production')]
 	public function production(Request $request, EntityManagerInterface $em): Response
 	{
 		$production = new Production();
@@ -157,7 +159,7 @@ class BaseController extends AbstractController
 		]);
 	}
 
-	
+
 	#[Route('/Culture', name: 'app_culture')]
 	public function culture(Request $request, EntityManagerInterface $em): Response
 	{
@@ -178,14 +180,32 @@ class BaseController extends AbstractController
 			'form' => $form->createView()
 		]);
 	}
-
-	#[Route('/Epandre', name: 'app_epandre')]
-	public function epandre(Request $request, EntityManagerInterface $em): Response
+	#[Route('/Posseder', name: 'app_posseder')]
+	public function posseder(Request $request, EntityManagerInterface $em): Response
+	{
+		$posseder = new Posseder();
+		$form = $this->createForm(PossederType::class, $posseder);
+		
+		if($request->isMethod('POST')){
+			$form->handleRequest($request);
+			if ($form->isSubmitted()&&$form->isValid()){
+				$em->persist($posseder);	
+				$em->flush();				
+				$this->addFlash('notice','Message envoyé'); 
+				return $this->redirectToRoute('app_posseder'); 
+			}
+		}
+		
+		return $this->render('base/posseder.html.twig', [
+			'form' => $form->createView()
+		]);
+	}
+		#[Route('/Epandre', name: 'app_epandre')]
+		public function epandre(Request $request, EntityManagerInterface $em): Response
 	{
 		$culture = new epandre();
 		$form = $this->createForm(EpandreType::class, $culture);
-		
-		if($request->isMethod('POST')){
+				if($request->isMethod('POST')){
 			$form->handleRequest($request);
 			if ($form->isSubmitted()&&$form->isValid()){
 				$em->persist($culture);	
@@ -195,8 +215,11 @@ class BaseController extends AbstractController
 			}
 		}
 		
-		return $this->render('base/epandre.html.twig', [
+		return $this->render('base/epandre.html.twig', [			
 			'form' => $form->createView()
 		]);
 	}
+
+
+
 } 
