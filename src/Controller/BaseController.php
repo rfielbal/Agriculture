@@ -29,6 +29,9 @@ use App\Entity\Culture;
 use App\Form\PossederType;
 use App\Entity\Posseder;
 
+use App\Form\EpandreType;
+use App\Entity\Epandre;
+
 class BaseController extends AbstractController
 {
 	#[Route('/', name: 'app_accueil')]
@@ -203,12 +206,12 @@ class BaseController extends AbstractController
 		#[Route('/Epandre', name: 'app_epandre')]
 		public function epandre(Request $request, EntityManagerInterface $em): Response
 	{
-		$culture = new epandre();
-		$form = $this->createForm(EpandreType::class, $culture);
+		$epandre = new Epandre();
+		$form = $this->createForm(EpandreType::class, $epandre);
 				if($request->isMethod('POST')){
 			$form->handleRequest($request);
 			if ($form->isSubmitted()&&$form->isValid()){
-				$em->persist($culture);	
+				$em->persist($epandre);	
 				$em->flush();				
 				$this->addFlash('notice','Message envoyé'); 
 				return $this->redirectToRoute('app_epandre'); 
@@ -219,7 +222,5 @@ class BaseController extends AbstractController
 			'form' => $form->createView()
 		]);
 	}
-
-
 
 } 

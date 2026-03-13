@@ -22,27 +22,26 @@ class Engrais
     #[ORM\JoinColumn(nullable: false)]
     private ?Unite $unite = null;
 
+    public function __construct()
+    {
+        $this->epandres = new ArrayCollection();
+        $this->posseders = new ArrayCollection();
+
+    }
+
     /**
-<<<<<<< HEAD
      * @var Collection<int, Epandre>
      */
     #[ORM\OneToMany(targetEntity: Epandre::class, mappedBy: 'engrais', orphanRemoval: true)]
     private Collection $epandres;
 
-    public function __construct()
-    {
-        $this->epandres = new ArrayCollection();
-=======
+ 
+    /** 
      * @var Collection<int, Posseder>
      */
     #[ORM\OneToMany(targetEntity: Posseder::class, mappedBy: 'engrais')]
     private Collection $posseders;
-
-    public function __construct()
-    {
-        $this->posseders = new ArrayCollection();
->>>>>>> 4795358f99ef36dfb6bf4fd45c5ad1ab69a827cf
-    }
+    
 
     public function getId(): ?int
     {
@@ -74,7 +73,6 @@ class Engrais
     }
 
     /**
-<<<<<<< HEAD
      * @return Collection<int, Epandre>
      */
     public function getEpandres(): Collection
@@ -87,7 +85,9 @@ class Engrais
         if (!$this->epandres->contains($epandre)) {
             $this->epandres->add($epandre);
             $epandre->setEngrais($this);
-=======
+        }
+    }
+    /** 
      * @return Collection<int, Posseder>
      */
     public function getPosseders(): Collection
@@ -100,27 +100,27 @@ class Engrais
         if (!$this->posseders->contains($posseder)) {
             $this->posseders->add($posseder);
             $posseder->setEngrais($this);
->>>>>>> 4795358f99ef36dfb6bf4fd45c5ad1ab69a827cf
         }
 
         return $this;
     }
 
-<<<<<<< HEAD
     public function removeEpandre(Epandre $epandre): static
     {
         if ($this->epandres->removeElement($epandre)) {
             // set the owning side to null (unless already changed)
             if ($epandre->getEngrais() === $this) {
                 $epandre->setEngrais(null);
-=======
+            }
+        }
+    }
+
     public function removePosseder(Posseder $posseder): static
     {
         if ($this->posseders->removeElement($posseder)) {
             // set the owning side to null (unless already changed)
             if ($posseder->getEngrais() === $this) {
                 $posseder->setEngrais(null);
->>>>>>> 4795358f99ef36dfb6bf4fd45c5ad1ab69a827cf
             }
         }
 
