@@ -15,6 +15,9 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Form\ParcelleType;
 use App\Entity\Parcelle;
 
+use App\Form\ProductionType;
+use App\Entity\Production;
+
 
 class BaseController extends AbstractController
 {
@@ -57,12 +60,53 @@ class BaseController extends AbstractController
 					$em->persist($parcelle);	
 					$em->flush();	
 					$this->addFlash('notice','Message envoyé'); 
-					return $this->redirectToRoute('app_contact');
+					return $this->redirectToRoute('app_parcelle');
 				}
 			}
 			return $this->render('base/parcelle.html.twig', [
 			'form' => $form->createView()
 		]);
 	}
-}
 
+
+#[Route('/Production', name: 'app_production')]
+	public function production(Request $request, EntityManagerInterface $em): Response
+	{
+		$production = new Production();
+		$form = $this->createForm(ProductionType::class, $production);
+		
+		if($request->isMethod('POST')){
+			$form->handleRequest($request);
+			if ($form->isSubmitted()&&$form->isValid()){
+				$em->persist($production);	
+				$em->flush();				
+				$this->addFlash('notice','Message envoyé'); 
+				return $this->redirectToRoute('app_production'); 
+			}
+		}
+		
+		return $this->render('base/production.html.twig', [
+			'form' => $form->createView()
+		]);
+	}
+	#[Route('/Culture', name: 'app_culture')]
+	public function culture(Request $request, EntityManagerInterface $em): Response
+	{
+		$production = new Production();
+		$form = $this->createForm(CultureType::class, $culture);
+		
+		if($request->isMethod('POST')){
+			$form->handleRequest($request);
+			if ($form->isSubmitted()&&$form->isValid()){
+				$em->persist($production);	
+				$em->flush();				
+				$this->addFlash('notice','Message envoyé'); 
+				return $this->redirectToRoute('app_culture'); 
+			}
+		}
+		
+		return $this->render('base/culture.html.twig', [
+			'form' => $form->createView()
+		]);
+	}
+} 
