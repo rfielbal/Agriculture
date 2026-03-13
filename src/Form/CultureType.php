@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Culture;
+use App\Form\CultureType;
 use App\Entity\Parcelle;
 use App\Entity\Production;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
