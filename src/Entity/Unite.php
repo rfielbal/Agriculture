@@ -24,9 +24,16 @@ class Unite
     #[ORM\OneToMany(targetEntity: Engrais::class, mappedBy: 'unite')]
     private Collection $engrais;
 
+    /**
+     * @var Collection<int, Production>
+     */
+    #[ORM\OneToMany(targetEntity: Production::class, mappedBy: 'unite', orphanRemoval: true)]
+    private Collection $productions;
+
     public function __construct()
     {
         $this->engrais = new ArrayCollection();
+        $this->productions = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -70,6 +77,36 @@ class Unite
             // set the owning side to null (unless already changed)
             if ($engrai->getUnite() === $this) {
                 $engrai->setUnite(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Production>
+     */
+    public function getProductions(): Collection
+    {
+        return $this->productions;
+    }
+
+    public function addProduction(Production $production): static
+    {
+        if (!$this->productions->contains($production)) {
+            $this->productions->add($production);
+            $production->setUnite($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProduction(Production $production): static
+    {
+        if ($this->productions->removeElement($production)) {
+            // set the owning side to null (unless already changed)
+            if ($production->getUnite() === $this) {
+                $production->setUnite(null);
             }
         }
 
