@@ -2,45 +2,50 @@
 
 namespace App\Form;
 
-use App\Entity\Culture;
-use App\Form\CultureType;
+use App\Entity\Date;
+use App\Entity\Engrais;
+use App\Entity\Epandre;
 use App\Entity\Parcelle;
-use App\Entity\Production;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\TextType; 
+use Symfony\Component\Form\Extension\Core\Type\EmailType; 
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 
-class CultureType extends AbstractType
+
+class EpandreType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('dateCulture', DateType::class, ['attr' => ['class'=> 'form-control'], 'label_attr' => ['class'=>'fw-bold']])
-            ->add('dateFin', DateType::class, ['attr' => ['class'=> 'form-control'], 'label_attr' => ['class'=>'fw-bold']])
-            ->add('qteRecoltee', IntegerType::class, ['attr' => ['class'=> 'form-control'], 'label_attr' => ['class'=>'fw-bold']])
+            ->add('qteEpendu')
+            ->add('engrais', EntityType::class, [
+                'class' => Engrais::class,
+                'choice_label' => 'id',
+            ])
             ->add('parcelle', EntityType::class, [
                 'class' => Parcelle::class,
                 'choice_label' => 'id',
             ])
-            ->add('production', EntityType::class, [
-                'class' => Production::class,
+            ->add('date', EntityType::class, [
+                'class' => Date::class,
                 'choice_label' => 'id',
             ])
-            ->add('envoyer', SubmitType::class, ['attr' => ['class'=> 'btn bg-primary text-white m-4' ],'row_attr' => ['class' => 'text-center'],])
+           
+
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Culture::class,
+            'data_class' => Epandre::class,
         ]);
     }
 }

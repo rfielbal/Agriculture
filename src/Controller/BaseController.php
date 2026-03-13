@@ -29,6 +29,9 @@ use App\Entity\Culture;
 use App\Form\PossederType;
 use App\Entity\Posseder;
 
+use App\Form\EpandreType;
+use App\Entity\Epandre;
+
 class BaseController extends AbstractController
 {
 	#[Route('/', name: 'app_accueil')]
@@ -138,7 +141,7 @@ class BaseController extends AbstractController
 
 
 
-#[Route('/Production', name: 'app_production')]
+	#[Route('/Production', name: 'app_production')]
 	public function production(Request $request, EntityManagerInterface $em): Response
 	{
 		$production = new Production();
@@ -200,4 +203,26 @@ class BaseController extends AbstractController
 			'form' => $form->createView()
 		]);
 	}
+
+	#[Route('/Epandre', name: 'app_epandre')]
+	public function Epandre(Request $request, EntityManagerInterface $em): Response
+	{
+		$epandre = new Epandre();
+		$form = $this->createForm(EpandreType::class, $epandre);
+		
+		if($request->isMethod('POST')){
+			$form->handleRequest($request);
+			if ($form->isSubmitted()&&$form->isValid()){
+				$em->persist($epandre);	
+				$em->flush();				
+				$this->addFlash('notice','Message envoyé'); 
+				return $this->redirectToRoute('app_epandre'); 
+			}
+		}
+		 
+		return $this->render('base/epandre.html.twig', [			
+			'form' => $form->createView()
+		]);
+	}
+
 } 
