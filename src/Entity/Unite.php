@@ -29,11 +29,17 @@ class Unite
      */
     #[ORM\OneToMany(targetEntity: Production::class, mappedBy: 'unite', orphanRemoval: true)]
     private Collection $productions;
+    /** 
+    * @var Collection<int, ElementChimique>
+     */
+    #[ORM\OneToMany(targetEntity: ElementChimique::class, mappedBy: 'unite', orphanRemoval: true)]
+    private Collection $elementChimiques;
 
     public function __construct()
     {
         $this->engrais = new ArrayCollection();
         $this->productions = new ArrayCollection();
+        $this->elementChimiques = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -97,9 +103,26 @@ class Unite
             $this->productions->add($production);
             $production->setUnite($this);
         }
+        return $this;
+    }
+    /** 
+     * @return Collection<int, ElementChimique>
+     */
+    public function getElementChimiques(): Collection
+    {
+        return $this->elementChimiques;
+    }
+
+    public function addElementChimique(ElementChimique $elementChimique): static
+    {
+        if (!$this->elementChimiques->contains($elementChimique)) {
+            $this->elementChimiques->add($elementChimique);
+            $elementChimique->setUnite($this);
+        }
 
         return $this;
     }
+
 
     public function removeProduction(Production $production): static
     {
@@ -107,6 +130,18 @@ class Unite
             // set the owning side to null (unless already changed)
             if ($production->getUnite() === $this) {
                 $production->setUnite(null);
+            }
+        }
+        return $his;
+    }
+
+    public function removeElementChimique(ElementChimique $elementChimique): static
+    {
+        if ($this->elementChimiques->removeElement($elementChimique)) {
+            // set the owning side to null (unless already changed)
+            if ($elementChimique->getUnite() === $this) {
+                $elementChimique->setUnite(null);
+
             }
         }
 
