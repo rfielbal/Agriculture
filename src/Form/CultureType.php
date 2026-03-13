@@ -28,11 +28,11 @@ class CultureType extends AbstractType
             ->add('parcelle', EntityType::class, [
                 'class' => Parcelle::class,
                 'choice_label' => 'id',
-            ], IntegerType::class, ['attr' => ['class'=> 'form-control'], 'label_attr' => ['class'=>'fw-bold']])
+            ])
             ->add('production', EntityType::class, [
                 'class' => Production::class,
                 'choice_label' => 'id',
-            ], IntegerType::class, ['attr' => ['class'=> 'form-control'], 'label_attr' => ['class'=>'fw-bold']])
+            ])
             ->add('envoyer', SubmitType::class, ['attr' => ['class'=> 'btn bg-primary text-white m-4' ],'row_attr' => ['class' => 'text-center'],])
         ;
     }
