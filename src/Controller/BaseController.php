@@ -26,6 +26,8 @@ use App\Form\EngraisType;
 use App\Form\CultureType;
 use App\Entity\Culture;
 
+use App\Form\PossederType;
+use App\Entity\Posseder;
 
 class BaseController extends AbstractController
 {
@@ -138,7 +140,7 @@ class BaseController extends AbstractController
 		]);
 	}
 
-	
+
 	#[Route('/Culture', name: 'app_culture')]
 	public function culture(Request $request, EntityManagerInterface $em): Response
 	{
@@ -156,6 +158,26 @@ class BaseController extends AbstractController
 		}
 		
 		return $this->render('base/culture.html.twig', [
+			'form' => $form->createView()
+		]);
+	}
+	#[Route('/Posseder', name: 'app_posseder')]
+	public function posseder(Request $request, EntityManagerInterface $em): Response
+	{
+		$posseder = new Posseder();
+		$form = $this->createForm(PossederType::class, $posseder);
+		
+		if($request->isMethod('POST')){
+			$form->handleRequest($request);
+			if ($form->isSubmitted()&&$form->isValid()){
+				$em->persist($posseder);	
+				$em->flush();				
+				$this->addFlash('notice','Message envoyé'); 
+				return $this->redirectToRoute('app_posseder'); 
+			}
+		}
+		
+		return $this->render('base/posseder.html.twig', [
 			'form' => $form->createView()
 		]);
 	}
